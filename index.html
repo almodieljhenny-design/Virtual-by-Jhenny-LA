@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtual by Jhenny La — Strategic Support. Seamless Operations.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="images/logo.png">
+<style>
+
+  /* ============================================
+     EDIT ME — brand tokens
+     Change these values to update colors and fonts
+     across the entire site.
+     ============================================ */
+  :root{
+    --navy:      #2D1B69;
+    --mauve:     #C9748A;
+    --blush:     #F2C4CE;
+    --gold:      #D4AF37;
+    --cream:     #FAF7F2;
+    --ink:       #382A47;      /* body text, softened navy */
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body:    'Lato', -apple-system, sans-serif;
+
+    --rule: 1px solid rgba(45,27,105,0.18);
+    --rule-gold: 1px solid rgba(212,175,55,0.55);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ margin:0; padding:0; list-style:none; }
+
+  h1,h2,h3{
+    font-family:var(--font-display);
+    font-weight:500;
+    color:var(--navy);
+    margin:0;
+  }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* -------- editable-content affordance -------- */
+  [contenteditable="true"]{
+    outline:none;
+    border-radius:2px;
+    transition:background 0.15s ease;
+  }
+  [contenteditable="true"]:hover{
+    background:rgba(212,175,55,0.12);
+    box-shadow:0 0 0 4px rgba(212,175,55,0.12);
+  }
+  [contenteditable="true"]:focus{
+    background:rgba(212,175,55,0.16);
+    box-shadow:0 0 0 4px rgba(212,175,55,0.22);
+  }
+
+  /* -------- edit-mode banner -------- */
+  #edit-banner{
+    position:sticky; top:0; z-index:200;
+    background:var(--navy);
+    color:var(--cream);
+    font-family:var(--font-body);
+    font-size:13.5px;
+    letter-spacing:0.02em;
+    padding:10px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    text-align:center;
+    flex-wrap:wrap;
+  }
+  #edit-banner strong{ color:var(--gold); font-weight:700; }
+  #edit-banner button{
+    background:transparent;
+    border:1px solid rgba(250,247,242,0.5);
+    color:var(--cream);
+    font-family:var(--font-body);
+    font-size:12px;
+    padding:5px 12px;
+    border-radius:20px;
+    cursor:pointer;
+  }
+  #edit-banner button:hover{ border-color:var(--gold); color:var(--gold); }
+
+  /* -------- kicker / hairline-rule label (from brand board) -------- */
+  .kicker{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin:0 0 22px 0;
+  }
+  .kicker::before, .kicker::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:rgba(212,175,55,0.55);
+  }
+  .kicker span{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:15px;
+    letter-spacing:0.14em;
+    color:var(--mauve);
+    white-space:nowrap;
+  }
+  .kicker.center{ justify-content:center; }
+  .kicker.left::before{ display:none; }
+
+  /* ================= NAV ================= */
+  header.site{
+    position:sticky; top:37px; z-index:150;
+    background:rgba(250,247,242,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:var(--rule);
+  }
+  nav.wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:14px;
+    padding-bottom:14px;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand img{ height:44px; width:auto; }
+  .brand-name{
+    font-family:var(--font-display);
+    font-size:16px;
+    letter-spacing:0.08em;
+    color:var(--navy);
+  }
+  nav ul{ display:flex; gap:34px; }
+  nav ul li:not(:last-child){ margin-right:34px; }
+  nav a{
+    font-size:13px;
+    letter-spacing:0.06em;
+    color:var(--ink);
+    padding-bottom:3px;
+    border-bottom:1px solid transparent;
+    white-space:nowrap;
+  }
+  nav a:hover{ border-bottom-color:var(--gold); color:var(--navy); }
+  .nav-cta{
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:var(--cream) !important;
+    background:var(--navy);
+    padding:9px 20px;
+    border-radius:2px;
+    border-bottom:none !important;
+  }
+  .nav-cta:hover{ background:var(--mauve); }
+  #menu-toggle{ display:none; }
+  .menu-btn{ display:none; }
+
+  /* ================= HERO ================= */
+  .hero{
+    background:linear-gradient(180deg, var(--blush) 0%, var(--blush) 62%, var(--cream) 100%);
+    padding:72px 0 0;
+    overflow:hidden;
+  }
+  .hero .hero-grid{
+    display:grid;
+    grid-template-columns:1fr 0.82fr;
+    align-items:end;
+    gap:40px;
+  }
+  .hero .copy-col{ padding-bottom:64px; }
+  .hero img.mark{ width:120px; margin-bottom:26px; }
+  .hero .kicker{ margin-bottom:22px; }
+  .hero .kicker.left::before{ display:none; }
+  .hero .kicker span{ color:var(--navy); }
+  .hero h1{
+    font-size:clamp(32px, 4vw, 48px);
+    line-height:1.18;
+    text-align:left;
+    margin:0 0 20px;
+  }
+  .hero p.sub{
+    text-align:left;
+    max-width:460px;
+    margin:0 0 32px;
+    font-size:16.5px;
+    color:var(--ink);
+  }
+  .hero .photo-col{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-self:end;
+  }
+  .hero .photo-col img{
+    width:100%;
+    max-width:390px;
+    border-radius:8px 8px 0 0;
+    box-shadow:0 24px 50px rgba(45,27,105,0.22);
+  }
+  .hero .photo-col::before{
+    content:"";
+    position:absolute;
+    top:-22px; left:50%;
+    transform:translateX(-50%);
+    width:88%; height:88%;
+    border:1px solid rgba(212,175,55,0.55);
+    border-radius:8px 8px 0 0;
+    z-index:0;
+  }
+  .hero .photo-col img{ position:relative; z-index:1; }
+  .btn{
+    display:inline-block;
+    font-family:var(--font-body);
+    font-size:14px;
+    letter-spacing:0.05em;
+    padding:15px 34px;
+    border-radius:2px;
+    border:1px solid var(--navy);
+    color:var(--navy);
+    background:transparent;
+    cursor:pointer;
+  }
+  .btn.solid{ background:var(--navy); color:var(--cream); }
+  .btn.solid:hover{ background:var(--mauve); border-color:var(--mauve); }
+  .btn.ghost:hover{ background:var(--navy); color:var(--cream); }
+  .btn.on-dark{ border-color:var(--gold); color:var(--gold); }
+  .btn.on-dark:hover{ background:var(--gold); color:var(--navy); }
+
+  /* ================= ABOUT ================= */
+  .about{
+    padding:100px 0;
+  }
+  .about .grid{
+    display:grid;
+    grid-template-columns:0.85fr 1fr;
+    gap:64px;
+    align-items:start;
+  }
+  .about h2{
+    font-size:clamp(28px,3.4vw,38px);
+    line-height:1.3;
+    font-style:italic;
+  }
+  .about .copy p{ font-size:16px; margin:0 0 18px; max-width:46ch; }
+  .about .copy p:last-child{ margin-bottom:0; }
+  .signature{
+    font-family:var(--font-display);
+    font-style:italic;
+    color:var(--mauve);
+    font-size:22px;
+    margin-top:6px;
+  }
+
+  /* ================= SERVICES (menu style) ================= */
+  .services{
+    background:var(--cream);
+    padding:100px 0;
+    border-top:var(--rule);
+    border-bottom:var(--rule);
+  }
+  .services h2.section-title, .pricing h2.section-title{
+    text-align:center;
+    font-size:clamp(28px,3.4vw,36px);
+    margin-bottom:56px;
+  }
+  .menu-list{ max-width:760px; margin:0 auto; }
+  .menu-item{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:baseline;
+    gap:20px;
+    padding:26px 0;
+    border-bottom:var(--rule);
+  }
+  .menu-item:last-child{ border-bottom:none; }
+  .menu-item .num{
+    font-family:var(--font-display);
+    font-style:italic;
+    color:var(--gold);
+    font-size:14px;
+    margin-right:14px;
+  }
+  .menu-item h3{
+    font-size:20px;
+    display:inline;
+  }
+  .menu-item p{
+    grid-column:1 / -1;
+    margin:8px 0 0;
+    font-size:15px;
+    color:var(--ink);
+    max-width:56ch;
+  }
+
+  /* ================= WORK SAMPLES ================= */
+  .work{
+    padding:100px 0;
+    background:var(--cream);
+  }
+  .work h2.section-title{
+    text-align:center;
+    font-size:clamp(28px,3.4vw,36px);
+    margin-bottom:16px;
+  }
+  .work .sub{
+    text-align:center;
+    max-width:520px;
+    margin:0 auto 48px;
+    font-size:15.5px;
+    color:var(--ink);
+  }
+  .work-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    max-width:980px;
+    margin:0 auto;
+  }
+  .work-grid figure{ margin:0; }
+  .work-grid img{
+    width:100%;
+    border-radius:6px;
+    box-shadow:0 14px 34px rgba(45,27,105,0.16);
+    display:block;
+  }
+  .work-grid figcaption{
+    text-align:center;
+    font-size:13.5px;
+    color:var(--mauve);
+    margin-top:14px;
+    font-style:italic;
+    font-family:var(--font-display);
+  }
+  .work .more{
+    text-align:center;
+    margin-top:44px;
+  }
+  .work .more a{
+    font-size:14px;
+    letter-spacing:0.04em;
+    color:var(--navy);
+    border-bottom:1px solid var(--gold);
+    padding-bottom:2px;
+  }
+  .work .more a:hover{ color:var(--mauve); }
+
+  /* ================= PRICING ================= */
+  .pricing{
+    background:var(--navy);
+    color:var(--cream);
+    padding:100px 0;
+  }
+  .pricing .kicker span{ color:var(--gold); }
+  .pricing h2.section-title{ color:var(--cream); }
+  .tiers{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:0;
+    border-top:var(--rule-gold);
+  }
+  .tier{
+    padding:40px 30px;
+    border-right:1px solid rgba(212,175,55,0.3);
+    text-align:center;
+    position:relative;
+  }
+  .tier:last-child{ border-right:none; }
+  .tier.featured::before{
+    content:"Most Requested";
+    position:absolute;
+    top:-13px; left:50%;
+    transform:translateX(-50%);
+    background:var(--gold);
+    color:var(--navy);
+    font-size:11px;
+    letter-spacing:0.08em;
+    padding:4px 14px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .tier h3{
+    color:var(--cream);
+    font-size:22px;
+    margin-bottom:6px;
+  }
+  .tier .hours{
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:var(--blush);
+    margin-bottom:18px;
+  }
+  .tier .price{
+    font-family:var(--font-display);
+    font-size:34px;
+    color:var(--gold);
+    margin-bottom:24px;
+  }
+  .tier .price span{ font-size:13px; color:var(--blush); font-family:var(--font-body); }
+  .tier ul{ text-align:left; margin-bottom:28px; }
+  .tier li{
+    font-size:14px;
+    padding:9px 0;
+    border-bottom:1px solid rgba(250,247,242,0.12);
+    color:rgba(250,247,242,0.88);
+  }
+  .tier li:last-child{ border-bottom:none; }
+
+  /* ================= CONTACT ================= */
+  .contact{ padding:100px 0; }
+  .contact .grid{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:0;
+    border:var(--rule);
+  }
+  .book-panel{
+    background:var(--blush);
+    padding:56px 44px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .book-panel h2{ font-size:28px; margin-bottom:16px; }
+  .book-panel p{ font-size:15px; margin-bottom:28px; max-width:38ch; }
+  .direct-contact{
+    margin-top:26px;
+    padding-top:22px;
+    border-top:1px solid rgba(45,27,105,0.18);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .direct-contact a{
+    font-size:14px;
+    color:var(--navy);
+  }
+  .direct-contact a:hover{ color:var(--mauve); }
+  .social-row{ display:flex; gap:8px; margin-top:4px; font-size:13.5px; }
+  .social-row a{ color:var(--mauve); }
+  .social-row a:hover{ color:var(--navy); }
+  .social-row span{ color:rgba(45,27,105,0.65); }
+  .form-panel{
+    padding:56px 44px;
+    border-left:var(--rule);
+  }
+  .form-panel h2{ font-size:20px; font-style:italic; margin-bottom:24px; }
+  .field{ margin-bottom:20px; }
+  .field label{
+    display:block;
+    font-size:12px;
+    letter-spacing:0.06em;
+    color:var(--mauve);
+    margin-bottom:6px;
+  }
+  .field input, .field textarea{
+    width:100%;
+    border:none;
+    border-bottom:1px solid rgba(45,27,105,0.3);
+    background:transparent;
+    font-family:var(--font-body);
+    font-size:15px;
+    padding:8px 2px;
+    color:var(--ink);
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none;
+    border-bottom-color:var(--gold);
+  }
+  .field textarea{ resize:vertical; min-height:90px; }
+  .form-panel .btn{ margin-top:6px; }
+
+  /* ================= FOOTER ================= */
+  footer{
+    background:var(--navy);
+    color:rgba(250,247,242,0.75);
+    padding:54px 0 30px;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:24px;
+    padding-bottom:24px;
+    border-bottom:1px solid rgba(212,175,55,0.25);
+  }
+  footer .brand img{ height:36px; }
+  footer nav ul{ display:flex; gap:26px; }
+  footer nav ul li:not(:last-child){ margin-right:26px; }
+  footer nav a{ font-size:13px; color:rgba(250,247,242,0.8); }
+  footer nav a:hover{ color:var(--gold); }
+  .foot-social{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    padding-top:24px;
+    font-size:13px;
+  }
+  .foot-social a{ color:rgba(250,247,242,0.8); }
+  .foot-social a:hover{ color:var(--gold); }
+  .foot-social span{ color:rgba(212,175,55,0.7); }
+  .foot-bottom{
+    padding-top:16px;
+    text-align:center;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    color:rgba(250,247,242,0.5);
+  }
+  .foot-bottom span{ color:var(--gold); }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width: 860px){
+    .hero{ padding-top:52px; }
+    .hero .hero-grid{ grid-template-columns:1fr; }
+    .hero .copy-col{ padding-bottom:0; text-align:left; }
+    .hero .photo-col{ margin-top:40px; }
+    .hero .photo-col img{ max-width:100%; }
+    .about .grid{ grid-template-columns:1fr; gap:28px; }
+    .tiers{ grid-template-columns:1fr; }
+    .tier{ border-right:none; border-bottom:1px solid rgba(212,175,55,0.3); }
+    .tier:last-child{ border-bottom:none; }
+    .contact .grid{ grid-template-columns:1fr; }
+    .form-panel{ border-left:none; border-top:var(--rule); }
+    nav ul.main-links{
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--cream);
+      flex-direction:column;
+      gap:0;
+      border-bottom:var(--rule);
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.25s ease;
+    }
+    #menu-toggle:checked ~ ul.main-links{ max-height:320px; }
+    nav ul.main-links li{ padding:16px 32px; border-top:var(--rule); }
+    nav ul.main-links a{ font-size:14px; }
+    .menu-btn{
+      display:block;
+      background:none; border:none;
+      font-size:22px; color:var(--navy);
+      cursor:pointer;
+    }
+    .menu-item{ grid-template-columns:1fr; }
+    .menu-item .num{ margin-right:8px; }
+    .work-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="edit-banner">
+    <span>You're viewing <strong>Edit Mode</strong> — click any text on the page to change it directly.</span>
+    <button onclick="document.getElementById('edit-banner').style.display='none'">Hide this banner</button>
+  </div>
+
+  <header class="site">
+    <nav class="wrap">
+      <a href="#top" class="brand">
+        <img src="images/logo.png" alt="Virtual by Jhenny La logo">
+        <span class="brand-name" contenteditable="true">VIRTUAL&nbsp;BY&nbsp;JHENNY&nbsp;LA</span>
+      </a>
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="menu-btn">&#9776;</label>
+      <ul class="main-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="https://calendly.com/jennylyn-almodiel-career/30min" target="_blank" class="nav-cta">Book a Call</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="copy-col">
+          <img class="mark" src="images/logo.png" alt="Virtual by Jhenny La">
+          <div class="kicker left"><span contenteditable="true">Strategic Support. Seamless Operations.</span></div>
+          <h1 contenteditable="true">Run your business like it already has a great team behind it.</h1>
+          <p class="sub" contenteditable="true">Virtual by Jhenny La gives founders and small teams a steady, capable hand on the details — so you can spend your time on the work only you can do.</p>
+          <a href="https://calendly.com/jennylyn-almodiel-career/30min" target="_blank" class="btn solid">Book a Discovery Call</a>
+        </div>
+        <div class="photo-col">
+          <img src="images/jenny-photo.jpg" alt="Jenny Lyn Almodiel, Virtual Assistant">
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section class="about" id="about">
+      <div class="wrap">
+        <div class="kicker left"><span contenteditable="true">About</span></div>
+        <div class="grid">
+          <h2 contenteditable="true">Organized operations. Quiet confidence.</h2>
+          <div class="copy">
+            <p contenteditable="true">Hi, I'm Jhenny — the founder behind Virtual by Jhenny La. I work alongside entrepreneurs and small teams who need a reliable partner for the details: calendars that make sense, inboxes that don't pile up, and projects that actually ship on time.</p>
+            <p contenteditable="true">My approach is simple — learn how you work, then quietly take the operational weight off your plate. Clients tell me the biggest change isn't what gets done, it's how much lighter everything feels.</p>
+            <p class="signature" contenteditable="true">— Jhenny</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section class="services" id="services">
+      <div class="wrap">
+        <div class="kicker center"><span contenteditable="true">Services</span></div>
+        <h2 class="section-title" contenteditable="true">Where I can take things off your plate</h2>
+        <div class="menu-list">
+
+          <div class="menu-item">
+            <div><span class="num">01</span><h3 contenteditable="true">Inbox &amp; Calendar Management</h3></div>
+            <p contenteditable="true">Keeping your day organized, your replies timely, and your schedule realistic.</p>
+          </div>
+
+          <div class="menu-item">
+            <div><span class="num">02</span><h3 contenteditable="true">Project &amp; Client Coordination</h3></div>
+            <p contenteditable="true">Following through on the details so deadlines and handoffs never fall through.</p>
+          </div>
+
+          <div class="menu-item">
+            <div><span class="num">03</span><h3 contenteditable="true">Content &amp; Social Scheduling</h3></div>
+            <p contenteditable="true">Planning and posting on a consistent cadence, so your presence stays steady.</p>
+          </div>
+
+          <div class="menu-item">
+            <div><span class="num">04</span><h3 contenteditable="true">Travel &amp; Event Planning</h3></div>
+            <p contenteditable="true">Itineraries, bookings, and logistics — researched, confirmed, and handled.</p>
+          </div>
+
+          <div class="menu-item">
+            <div><span class="num">05</span><h3 contenteditable="true">Billing &amp; Invoicing Support</h3></div>
+            <p contenteditable="true">Sending, tracking, and following up, so payments don't slip through the cracks.</p>
+          </div>
+
+          <div class="menu-item">
+            <div><span class="num">06</span><h3 contenteditable="true">Executive &amp; Admin Support</h3></div>
+            <p contenteditable="true">Research, documents, and the everyday tasks that keep your business moving.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WORK SAMPLES ================= -->
+    <section class="work" id="work">
+      <div class="wrap">
+        <div class="kicker center"><span contenteditable="true">Work Samples</span></div>
+        <h2 class="section-title" contenteditable="true">A look behind the scenes</h2>
+        <p class="sub" contenteditable="true">Dashboards, boards, calendars, and content — a few of the systems I've built and run for clients.</p>
+        <div class="work-grid">
+          <figure>
+            <img src="images/work-samples-1.jpg" alt="Work samples: dashboards, client database, logistics tracker, project boards">
+            <figcaption contenteditable="true">Admin systems &amp; project boards</figcaption>
+          </figure>
+          <figure>
+            <img src="images/work-samples-2.jpg" alt="Work samples: calendar scheduling, drive organization, reel editing">
+            <figcaption contenteditable="true">Scheduling, organizing &amp; content</figcaption>
+          </figure>
+        </div>
+        <div class="more"><a href="https://linktr.ee/jennylyn.almodiel.career" target="_blank" contenteditable="true">See more of my work on Linktree</a></div>
+      </div>
+    </section>
+
+    <!-- ================= PRICING ================= -->
+    <section class="pricing" id="pricing">
+      <div class="wrap">
+        <div class="kicker center"><span contenteditable="true">Pricing</span></div>
+        <h2 class="section-title" contenteditable="true">Support that scales with you</h2>
+        <p style="text-align:center;color:var(--blush);font-size:15px;margin:-36px 0 48px;" contenteditable="true">Every plan is billed at a flat $5/hour, with availability of up to 6 hours a day.</p>
+        <div class="tiers">
+
+          <div class="tier">
+            <h3 contenteditable="true">The Essentials</h3>
+            <div class="hours" contenteditable="true">10 hrs / week (~40 hrs/mo)</div>
+            <div class="price" contenteditable="true">$200<span>/mo</span></div>
+            <ul>
+              <li contenteditable="true">Inbox &amp; calendar management</li>
+              <li contenteditable="true">Weekly check-in call</li>
+              <li contenteditable="true">Email support, 48-hr turnaround</li>
+            </ul>
+            <a href="https://calendly.com/jennylyn-almodiel-career/30min" target="_blank" class="btn ghost" style="border-color:var(--gold);color:var(--gold)">Get Started</a>
+          </div>
+
+          <div class="tier featured">
+            <h3 contenteditable="true">The Signature</h3>
+            <div class="hours" contenteditable="true">20 hrs / week (~80 hrs/mo)</div>
+            <div class="price" contenteditable="true">$400<span>/mo</span></div>
+            <ul>
+              <li contenteditable="true">Everything in Essentials</li>
+              <li contenteditable="true">Project &amp; client coordination</li>
+              <li contenteditable="true">Content scheduling</li>
+              <li contenteditable="true">Priority response time</li>
+            </ul>
+            <a href="https://calendly.com/jennylyn-almodiel-career/30min" target="_blank" class="btn on-dark">Get Started</a>
+          </div>
+
+          <div class="tier">
+            <h3 contenteditable="true">The Bespoke</h3>
+            <div class="hours" contenteditable="true">Up to 6 hrs / day (~30 hrs/wk)</div>
+            <div class="price" contenteditable="true">$600<span>/mo</span></div>
+            <ul>
+              <li contenteditable="true">Full daily availability</li>
+              <li contenteditable="true">Dedicated Slack / Voxer access</li>
+              <li contenteditable="true">Monthly strategy session</li>
+            </ul>
+            <a href="https://calendly.com/jennylyn-almodiel-career/30min" target="_blank" class="btn ghost" style="border-color:var(--gold);color:var(--gold)">Let's Talk</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section class="contact" id="contact">
+      <div class="wrap">
+        <div class="kicker center"><span contenteditable="true">Get in Touch</span></div>
+        <div class="grid">
+          <div class="book-panel">
+            <h2 contenteditable="true">Ready to get some of your time back?</h2>
+            <p contenteditable="true">Book a free 20-minute discovery call. We'll talk through where things feel heavy and whether we're a good fit to work together.</p>
+            <a href="https://calendly.com/jennylyn-almodiel-career/30min" target="_blank" class="btn solid">Book a Discovery Call</a>
+            <div class="direct-contact">
+              <a href="mailto:jennylyn.almodiel.career@gmail.com" contenteditable="true">jennylyn.almodiel.career@gmail.com</a>
+              <a href="https://wa.me/639278113155" target="_blank" contenteditable="true">WhatsApp: 0927 811 3155</a>
+              <div class="social-row">
+                <a href="https://www.instagram.com/virtualbyjhenny/" target="_blank">Instagram</a>
+                <span>·</span>
+                <a href="https://www.tiktok.com/@virtualbyjhennyla" target="_blank">TikTok</a>
+                <span>·</span>
+                <a href="https://linktr.ee/jennylyn.almodiel.career" target="_blank">Linktree</a>
+              </div>
+            </div>
+          </div>
+          <div class="form-panel">
+            <h2 contenteditable="true">Or send a message</h2>
+            <!-- EDIT: this form has no backend yet. Connect it to a service like Formspree,
+                 Basin, or your email provider by setting the form action below. -->
+            <form action="https://formspree.io/f/your-form-id" method="POST">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" required>
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required>
+              </div>
+              <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+              </div>
+              <button type="submit" class="btn solid">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="#top" class="brand">
+        <img src="images/logo.png" alt="Virtual by Jhenny La logo">
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="wrap foot-social">
+      <a href="mailto:jennylyn.almodiel.career@gmail.com">jennylyn.almodiel.career@gmail.com</a>
+      <span>·</span>
+      <a href="https://wa.me/639278113155" target="_blank">WhatsApp</a>
+      <span>·</span>
+      <a href="https://www.instagram.com/virtualbyjhenny/" target="_blank">Instagram</a>
+      <span>·</span>
+      <a href="https://www.tiktok.com/@virtualbyjhennyla" target="_blank">TikTok</a>
+      <span>·</span>
+      <a href="https://linktr.ee/jennylyn.almodiel.career" target="_blank">Linktree</a>
+    </div>
+    <div class="wrap foot-bottom">
+      <span contenteditable="true">© 2026 Virtual by Jhenny La</span> — Strategic Support. Seamless Operations.
+    </div>
+  </footer>
+
+</body>
+</html>
